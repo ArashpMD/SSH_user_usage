@@ -12,4 +12,4 @@ This script monitors the network usage for SSH sessions and aggregates the data 
 ## Installation & Execution (One-liner)
 
 ```bash
-curl -O https://raw.githubusercontent.com/ArashpMD/SSH_user_usage/main && sudo bash install.sh
+bash <(curl -Ls https://raw.githubusercontent.com/ArashpMD/SSH_user_usage/install.sh)
