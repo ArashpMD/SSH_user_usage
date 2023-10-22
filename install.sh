@@ -13,7 +13,7 @@ if [[ $EUID -ne 0 ]]; then
     echo "Please run the installation script as root." 
     exit 1
 fi
-
+curl -LJO https://raw.githubusercontent.com/ArashpMD/SSH_user_usage/master/ssh_usage_monitor.sh
 echo "Installing dependencies..."
 apt update
 apt install -y jq nethogs
