@@ -12,4 +12,4 @@ This script monitors the network usage for SSH sessions and aggregates the data 
 ## Installation & Execution (One-liner)
 
 ```bash
-curl -O https://raw.githubusercontent.com/ArashpMD/nethogs-ssh-aggregator/main/install.sh && sudo bash install.sh
+curl -O https://raw.githubusercontent.com/ArashpMD/SSH_user_usage/main && sudo bash install.sh
