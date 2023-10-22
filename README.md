@@ -12,4 +12,4 @@ This script monitors the network usage for SSH sessions and aggregates the data 
 ## Installation & Execution (One-liner)
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/nethogs-ssh-aggregator.git && cd nethogs-ssh-aggregator && sudo chmod +x nethogs_aggregator.sh && sudo ./nethogs_aggregator.sh
+git clone https://github.com/ArashpMD/nethogs-ssh-aggregator.git && cd nethogs-ssh-aggregator && sudo chmod +x nethogs_aggregator.sh && sudo ./nethogs_aggregator.sh
