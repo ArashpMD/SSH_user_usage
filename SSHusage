@@ -30,10 +30,10 @@ enabled1=$(systemctl is-enabled ssh_usage_monitor.service)
 echo -e "${PURPLE}Status Check:${RESET}"
 # Print the results
 echo -e "${BLUE}Status of ssh_usage_monitor.service: $status1"
-echo -e "ssh_usage_monitor.service is $enabled1.${RESET}"
+echo -e "ssh_usage_monitor.service is $enabled1.${RESET}\n \n"
 
 
-echo -e "${RED}SSH Usage:${RESET}\n"
+echo -e "${PURPLE}SSH Usage:${RESET}\n"
 
 # Print the header
 echo -e "${BLUE}USER           KB Sent       KB Received${RESET}"
@@ -41,7 +41,7 @@ echo -e "${BLUE}USER           KB Sent       KB Received${RESET}"
 # Fetch and format the JSON data
 cat /SSH_Usage.json | jq -r '.[] | "\(.name) \(.TX) \(.RX)"' | \
 awk -F: '{print $2}' | \
-awk -v white="$WHITE" -v purple="$PURPLE" '{printf "%s%-15s %s%10.2f %s%10.2f%s\n", white, $1, purple, $2, purple, $3, white}' | \
+awk '{printf "\033[37m%-15s \033[35m%10.2f \033[35m%10.2f\033[37m\n", $1, $2, $3}' | \
 sort -k1 | \
 column -t
 
