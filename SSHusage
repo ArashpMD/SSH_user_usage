@@ -29,11 +29,11 @@ status1=$(systemctl is-active ssh_usage_monitor.service)
 enabled1=$(systemctl is-enabled ssh_usage_monitor.service)
 echo -e "${PURPLE}Status Check:${RESET}"
 # Print the results
-echo -e "${BLUE}Status of ssh_usage_monitor.service: $status1"
-echo -e "ssh_usage_monitor.service is $enabled1.${RESET}\n \n"
+echo -e "${BLUE} SSH usage monitoring is currently $status1"
+echo -e "SSH usage monitoring is $enabled1 at system startup.${RESET}\n \n"
 
 
-echo -e "${PURPLE}SSH Usage:${RESET}\n"
+echo -e "${PURPLE}SSH Usage:${RESET}"
 
 # Print the header
 echo -e "${BLUE}USER           KB Sent       KB Received${RESET}"
@@ -49,8 +49,8 @@ echo "-------------------------------------------"
 
 function display_menu() {
     echo -e "${RED}SSH Usage Monitor Menu${RESET}"
-    echo "1. Start/Stop ssh_usage_monitor.service now"
-    echo "2. Toggle Enable/Disable ssh_usage_monitor.service at system startup"
+    echo "1. Start/Stop SSH usage monitoring service now"
+    echo "2. Enable/Disable SSH usage monitoring service at system startup"
     echo "3. Reset All Users' Traffic"
     echo "4. Exit"
     echo -e "Enter choice [1-4]: \c"
