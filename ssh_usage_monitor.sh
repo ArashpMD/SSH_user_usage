@@ -11,8 +11,9 @@ while true; do
     sudo timeout 58s stdbuf -o0 nethogs -j > nethogs_output.txt
     
     # Process the output to obtain summed values for each user
-    new_data=$(awk '/{/{flag=1} flag' nethogs_output.txt | jq -s -c '[flatten | group_by(.name) | .[] | select(.[0].name | contains("sshd")) | {name: .[0].name, RX: map(.RX) | add, TX: map(.TX) | add}]')
-    
+    #new_data=$(awk '/{/{flag=1} flag' nethogs_output.txt | jq -s -c '[flatten | group_by(.name) | .[] | select(.[0].name | contains("sshd")) | {name: .[0].name, RX: map(.RX) | add, TX: map(.TX) | add}]')
+    #new_data=$(awk '/{/{flag=1} flag' nethogs_output.txt | jq -s -c '[flatten | group_by(.name) | .[] | select(.[0].name | contains("sshd") and (.[0].name | test("\\[.*\\]") | not)) | {name: .[0].name, RX: map(.RX) | add, TX: map(.TX) | add}]')
+    new_data=$(awk '/{/{flag=1} flag' nethogs_output.txt | jq -s -c '[flatten | map(if .name | contains("root") then .name = "root" else . end) | group_by(.name) | .[] | select(.[0].name | contains("sshd") and (.[0].name | test("\\[.*\\]") | not)) | {name: .[0].name, RX: map(.RX) | add, TX: map(.TX) | add}]')
     # Merge the new data with the existing aggregated usage
     jq -s '.[0] as $original | .[1] as $new | ($original + $new) | group_by(.name) | map({name: .[0].name, RX: map(.RX) | add, TX: map(.TX) | add})' SSH_Usage.json <(echo "$new_data") > temp_output.json
     
