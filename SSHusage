@@ -17,13 +17,14 @@ function reset_all_traffic() {
 # Display SSH usage in a table format
 
 # Define coloring using tput
+RED=$(tput setaf 1)
 CYAN=$(tput setaf 6)
 BLUE=$(tput setaf 4)
 WHITE=$(tput setaf 7)
 PURPLE=$(tput setaf 5)
 RESET=$(tput sgr0)
 
-echo "${CYAN}SSH Usage:${RESET}\n"
+echo -e "${RED}SSH Usage:${RESET}\n"
 
 # Print the header
 echo -e "${BLUE}USER           KB Sent       KB Received${RESET}"
@@ -38,8 +39,8 @@ column -t
 echo "-------------------------------------------"
 
 function display_menu() {
-    echo "${YELLOW}SSH Usage Monitor Menu${RESET}"
-    echo "1. tart/Stop ssh_usage_monitor.service now"
+    echo -e "${RED}SSH Usage Monitor Menu${RESET}"
+    echo "1. Start/Stop ssh_usage_monitor.service now"
     echo "2. Toggle Enable/Disable ssh_usage_monitor.service at system startup"
     echo "3. Reset All Users' Traffic"
     echo "4. Exit"
