@@ -6,26 +6,13 @@
  |___/ |___/ |_||_|    \___/  |___/ |___| |_|_\   |_|  |_|  \___/  |_|\_| |___|   |_|    \___/  |_|_\ |___| |_|\_|  \___|
 
                                     by ArashpMD'
-# Function to display the menu
-show_menu() {
- 
- 
-    echo -e "\e[33mSSH Usage Monitor Menu\e[0m"  # Yellow color for the title
 
-    if systemctl is-active --quiet ssh_usage_monitor.service; then
-        echo -e "\e[32m1. Stop ssh_usage_monitor service now\e[0m"
-    else
-        echo -e "\e[32m1. Start ssh_usage_monitor service now\e[0m"
-    fi
-
-    if systemctl is-enabled --quiet ssh_usage_monitor.service; then
-        echo -e "\e[32m2. Disable ssh_usage_monitor service at system reboot \e[0m"
-    else
-        echo -e "\e[32m2. Enable ssh_usage_monitor service at system reboot \e[0m"
-    fi
-
-    echo -e "\e[32m3. Exit\e[0m"
+function reset_all_traffic() {
+    # Reset all numbers in front of TX and RX in the SSH_Usage.json file
+    jq '.[] |= {name: .name, RX: 0, TX: 0}' SSH_Usage.json > temp.json && mv temp.json SSH_Usage.json
+    echo "${GREEN}All user traffic has been reset.${RESET}"
 }
+
 
 # Display SSH usage in a table format
 
@@ -50,28 +37,51 @@ column -t
 
 echo "-------------------------------------------"
 
-
+function display_usage() {
+    echo "${YELLOW}SSH Usage Monitor Menu${RESET}"
+    echo "1. tart/Stop ssh_usage_monitor.service now"
+    echo "2. Toggle Enable/Disable ssh_usage_monitor.service at system startup"
+    echo "3. Reset All Users' Traffic"
+    echo "4. Exit"
+    echo -e "Enter choice [1-4]: \c"
+}
 # Show the menu and capture user input
 while true; do
-    show_menu
-    read -p "Enter your choice: " choice
-
+    display_menu
+    read choice
     case $choice in
-        1) 
-            if systemctl is-active --quiet ssh_usage_monitor.service; then
-                sudo systemctl stop ssh_usage_monitor.service && echo -e "\e[32mService stopped successfully!\e[0m" || echo -e "\e[31mFailed to stop the service.\e[0m"
+        1)
+            status=$(systemctl is-active ssh_usage_monitor.service)
+            if [ "$status" == "active" ]; then
+                sudo systemctl stop ssh_usage_monitor.service
+                echo "${GREEN}ssh_usage_monitor.service stopped.${RESET}"
             else
-                sudo systemctl start ssh_usage_monitor.service && echo -e "\e[32mService started successfully!\e[0m" || echo -e "\e[31mFailed to start the service.\e[0m"
+                sudo systemctl start ssh_usage_monitor.service
+                echo "${GREEN}ssh_usage_monitor.service started.${RESET}"
             fi
             ;;
-        2) 
-            if systemctl is-enabled --quiet ssh_usage_monitor.service; then
-                sudo systemctl disable ssh_usage_monitor.service && echo -e "\e[32mService disabled successfully!\e[0m" || echo -e "\e[31mFailed to disable the service.\e[0m"
+        2)
+            isEnabled=$(systemctl is-enabled ssh_usage_monitor.service)
+            if [ "$isEnabled" == "enabled" ]; then
+                sudo systemctl disable ssh_usage_monitor.service
+                echo "${GREEN}ssh_usage_monitor.service disabled.${RESET}"
             else
-                sudo systemctl enable ssh_usage_monitor.service && echo -e "\e[32mService enabled successfully!\e[0m" || echo -e "\e[31mFailed to enable the service.\e[0m"
+                sudo systemctl enable ssh_usage_monitor.service
+                echo "${GREEN}ssh_usage_monitor.service enabled.${RESET}"
             fi
             ;;
-        3) exit 0;;
-        *) echo -e "\e[31mInvalid choice. Please try again.\e[0m";;  # Red color for error message
+        3)
+            reset_all_traffic
+            ;;
+        4)
+            echo "${RED}Exiting...${RESET}"
+            exit 0
+            ;;
+        *)
+            echo "${RED}Invalid choice, please choose again.${RESET}"
+            ;;
     esac
+
+    sleep 2
+    clear
 done
