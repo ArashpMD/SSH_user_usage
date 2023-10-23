@@ -29,7 +29,7 @@ echo "${CYAN}SSH Usage:${RESET}\n"
 echo -e "${BLUE}USER           KB Sent       KB Received${RESET}"
 
 # Fetch and format the JSON data
-cat SSH_Usage.json | jq -r '.[] | "\(.name) \(.TX) \(.RX)"' | \
+cat /SSH_Usage.json | jq -r '.[] | "\(.name) \(.TX) \(.RX)"' | \
 awk -F: '{print $2}' | \
 awk -v white="$WHITE" -v purple="$PURPLE" '{printf "%s%-15s %s%10.2f %s%10.2f%s\n", white, $1, purple, $2, purple, $3, white}' | \
 sort -k1 | \
