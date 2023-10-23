@@ -1,44 +1,60 @@
 #!/bin/bash
 
-# Display the SSH_Usage.json in a tabular format using jq
-display_usage() {
-    echo "SSH Usage:"
-    jq -r '.[] | "\(.name) \(.RX) \(.TX)"' SSH_Usage.json | column -t
+# Function to display the menu
+show_menu() {
+    echo -e "\e[33mSSH Usage Monitor Menu\e[0m"  # Yellow color for the title
+
+    if systemctl is-active --quiet ssh_usage_monitor.service; then
+        echo -e "\e[32m1. Stop ssh_usage_monitor service\e[0m"
+    else
+        echo -e "\e[32m1. Start ssh_usage_monitor service\e[0m"
+    fi
+
+    if systemctl is-enabled --quiet ssh_usage_monitor.service; then
+        echo -e "\e[32m2. Disable ssh_usage_monitor service\e[0m"
+    else
+        echo -e "\e[32m2. Enable ssh_usage_monitor service\e[0m"
+    fi
+
+    echo -e "\e[32m3. Exit\e[0m"
 }
 
-# Menu for actions
-while true; do
-    clear
-    display_usage
-    echo ""
-    echo "1. Start ssh_usage_monitor.service"
-    echo "2. Stop ssh_usage_monitor.service"
-    echo "3. Enable ssh_usage_monitor.service"
-    echo "4. Disable ssh_usage_monitor.service"
-    echo "5. Exit"
-    echo ""
-    echo -n "Choose an option: "
-    read option
+# Display SSH usage in a table format
+echo -e "\e[36mSSH Usage:\e[0m\n"  # Cyan color for the header
 
-    case $option in
-        1)
-            sudo systemctl start ssh_usage_monitor.service
+# Print the header
+echo -e "\e[34mUSER           KB Sent       KB Received\e[0m"
+
+# Fetch and format the JSON data
+cat SSH_Usage.json | jq -r '.[] | "\(.name) \(.TX) \(.RX)"' | \
+awk -F: '{print $2}' | \
+awk '{printf "\e[37m%-15s \e[35m%10.2f \e[35m%10.2f\e[0m\n", $1, $2, $3}' | \
+sort -k1 | \
+column -t
+
+echo "-------------------------------------------"
+
+# Show the menu and capture user input
+while true; do
+    show_menu
+    read -p "Enter your choice: " choice
+
+    case $choice in
+        1) 
+            if systemctl is-active --quiet ssh_usage_monitor.service; then
+                sudo systemctl stop ssh_usage_monitor.service && echo -e "\e[32mService stopped successfully!\e[0m" || echo -e "\e[31mFailed to stop the service.\e[0m"
+            else
+                sudo systemctl start ssh_usage_monitor.service && echo -e "\e[32mService started successfully!\e[0m" || echo -e "\e[31mFailed to start the service.\e[0m"
+            fi
             ;;
-        2)
-            sudo systemctl stop ssh_usage_monitor.service
+        2) 
+            if systemctl is-enabled --quiet ssh_usage_monitor.service; then
+                sudo systemctl disable ssh_usage_monitor.service && echo -e "\e[32mService disabled successfully!\e[0m" || echo -e "\e[31mFailed to disable the service.\e[0m"
+            else
+                sudo systemctl enable ssh_usage_monitor.service && echo -e "\e[32mService enabled successfully!\e[0m" || echo -e "\e[31mFailed to enable the service.\e[0m"
+            fi
             ;;
-        3)
-            sudo systemctl enable ssh_usage_monitor.service
-            ;;
-        4)
-            sudo systemctl disable ssh_usage_monitor.service
-            ;;
-        5)
-            break
-            ;;
-        *)
-            echo "Invalid option. Press enter to continue."
-            read
-            ;;
+        3) exit 0;;
+        *) echo -e "\e[31mInvalid choice. Please try again.\e[0m";;  # Red color for error message
     esac
 done
