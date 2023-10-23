@@ -24,6 +24,15 @@ WHITE=$(tput setaf 7)
 PURPLE=$(tput setaf 5)
 RESET=$(tput sgr0)
 
+# Check the status of the service
+status1=$(systemctl is-active ssh_usage_monitor.service)
+enabled1=$(systemctl is-enabled ssh_usage_monitor.service)
+echo -e "${PURPLE}Status Check:${RESET}"
+# Print the results
+echo -e "${BLUE}Status of ssh_usage_monitor.service: $status1"
+echo -e "ssh_usage_monitor.service is $enabled1.${RESET}"
+
+
 echo -e "${RED}SSH Usage:${RESET}\n"
 
 # Print the header
