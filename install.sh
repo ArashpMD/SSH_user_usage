@@ -41,6 +41,6 @@ EOL
 
 systemctl daemon-reload
 systemctl enable ssh_usage_monitor.service
-sudo systemctl start nethogs_aggregator
+sudo systemctl start ssh_usage_monitor
 echo "Installation completed and Service Began!"
 
