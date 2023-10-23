@@ -24,6 +24,7 @@ WHITE=$(tput setaf 7)
 PURPLE=$(tput setaf 5)
 RESET=$(tput sgr0)
 
+function display_usage() {
 # Check the status of the service
 status1=$(systemctl is-active ssh_usage_monitor.service)
 enabled1=$(systemctl is-enabled ssh_usage_monitor.service)
@@ -46,7 +47,7 @@ sort -k1 | \
 column -t
 
 echo "-------------------------------------------"
-
+}
 function display_menu() {
     echo -e "${RED}SSH Usage Monitor Menu${RESET}"
     echo "1. Start/Stop SSH usage monitoring service now"
@@ -57,6 +58,7 @@ function display_menu() {
 }
 # Show the menu and capture user input
 while true; do
+    display_usage
     display_menu
     read choice
     case $choice in
