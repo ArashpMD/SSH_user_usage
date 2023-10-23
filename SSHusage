@@ -1,14 +1,14 @@
 #!/bin/bash
-
-# Function to display the menu
-show_menu() {
-    echo '
+   echo '
   ___   ___   _  _     _   _   ___   ___   ___     __  __    ___    _  _   ___   _____    ___    ___   ___   _  _    ___ 
  / __| / __| | || |   | | | | / __| | __| | _ \   |  \/  |  / _ \  | \| | |_ _| |_   _|  / _ \  | _ \ |_ _| | \| |  / __|
  \__ \ \__ \ | __ |   | |_| | \__ \ | _|  |   /   | |\/| | | (_) | | .` |  | |    | |   | (_) | |   /  | |  | .` | | (_ |
  |___/ |___/ |_||_|    \___/  |___/ |___| |_|_\   |_|  |_|  \___/  |_|\_| |___|   |_|    \___/  |_|_\ |___| |_|\_|  \___|
 
                                     by ArashpMD'
+# Function to display the menu
+show_menu() {
+ 
  
     echo -e "\e[33mSSH Usage Monitor Menu\e[0m"  # Yellow color for the title
 
@@ -28,19 +28,28 @@ show_menu() {
 }
 
 # Display SSH usage in a table format
-echo -e "\e[36mSSH Usage:\e[0m\n"  # Cyan color for the header
+
+# Define coloring using tput
+CYAN=$(tput setaf 6)
+BLUE=$(tput setaf 4)
+WHITE=$(tput setaf 7)
+PURPLE=$(tput setaf 5)
+RESET=$(tput sgr0)
+
+echo "${CYAN}SSH Usage:${RESET}\n"
 
 # Print the header
-echo -e "\e[34mUSER           KB Received       KB Sent\e[0m"
+echo "${BLUE}USER           KB Sent       KB Received${RESET}"
 
 # Fetch and format the JSON data
 cat SSH_Usage.json | jq -r '.[] | "\(.name) \(.TX) \(.RX)"' | \
 awk -F: '{print $2}' | \
-awk '{printf "\e[37m%-15s \e[35m%10.2f \e[35m%10.2f\e[0m\n", $1, $2, $3}' | \
+awk -v white="$WHITE" -v purple="$PURPLE" '{printf "%s%-15s %s%10.2f %s%10.2f%s\n", white, $1, purple, $2, purple, $3, white}' | \
 sort -k1 | \
 column -t
 
 echo "-------------------------------------------"
+
 
 # Show the menu and capture user input
 while true; do
