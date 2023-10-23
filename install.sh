@@ -43,4 +43,5 @@ systemctl daemon-reload
 systemctl enable ssh_usage_monitor.service
 sudo systemctl start ssh_usage_monitor
 echo "Installation completed and Service Began!"
-
+echo "To see the usage and menu just type SSHusage"
+echo "Enjoy!"
