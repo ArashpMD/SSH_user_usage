@@ -13,3 +13,9 @@ This script monitors the network usage for SSH sessions and aggregates the data 
 
 ```bash
 bash <(curl -Ls https://raw.githubusercontent.com/ArashpMD/SSH_user_usage/master/install.sh)
+
+## Usage Tracking
+The SSH user file is saved to root directory as ``SSH_Usage.json
+otherwise run this could to find it:
+```bash
+find / -name SSH_Usage.json 2>/dev/null
