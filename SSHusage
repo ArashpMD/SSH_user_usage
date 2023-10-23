@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Display the SSH_Usage.json in a tabular format using jq
+display_usage() {
+    echo "SSH Usage:"
+    jq -r '.[] | "\(.name) \(.RX) \(.TX)"' SSH_Usage.json | column -t
+}
+
+# Menu for actions
+while true; do
+    clear
+    display_usage
+    echo ""
+    echo "1. Start ssh_usage_monitor.service"
+    echo "2. Stop ssh_usage_monitor.service"
+    echo "3. Enable ssh_usage_monitor.service"
+    echo "4. Disable ssh_usage_monitor.service"
+    echo "5. Exit"
+    echo ""
+    echo -n "Choose an option: "
+    read option
+
+    case $option in
+        1)
+            sudo systemctl start ssh_usage_monitor.service
+            ;;
+        2)
+            sudo systemctl stop ssh_usage_monitor.service
+            ;;
+        3)
+            sudo systemctl enable ssh_usage_monitor.service
+            ;;
+        4)
+            sudo systemctl disable ssh_usage_monitor.service
+            ;;
+        5)
+            break
+            ;;
+        *)
+            echo "Invalid option. Press enter to continue."
+            read
+            ;;
+    esac
+done
