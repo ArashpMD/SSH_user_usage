@@ -16,10 +16,9 @@ bash <(curl -Ls https://raw.githubusercontent.com/ArashpMD/SSH_user_usage/master
 ```
 ## See Usage Tracking and Menu
 You can observe the consumption and service options by typing `SSHUsage` 
-
 ```bash
 SSHUsage
-
+```
 ## Usage Tracking File
 The SSH user file is saved to root directory as `SSH_Usage.json`
 otherwise run this could to find it:
