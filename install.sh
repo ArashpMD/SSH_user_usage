@@ -14,7 +14,7 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 curl -LJO https://raw.githubusercontent.com/ArashpMD/SSH_user_usage/master/ssh_usage_monitor.sh
-curl -LJO sshusage https://raw.githubusercontent.com/ArashpMD/SSH_user_usage/master/SSHusage && chmod +x SSHusage && sudo mv SSHusage /usr/local/bin/
+curl -LJO https://raw.githubusercontent.com/ArashpMD/SSH_user_usage/master/SSHusage && chmod +x SSHusage && sudo mv SSHusage /usr/local/bin/
 echo "Installing dependencies..."
 apt update
 apt install -y jq nethogs
