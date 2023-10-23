@@ -37,7 +37,7 @@ column -t
 
 echo "-------------------------------------------"
 
-function display_usage() {
+function display_menu() {
     echo "${YELLOW}SSH Usage Monitor Menu${RESET}"
     echo "1. tart/Stop ssh_usage_monitor.service now"
     echo "2. Toggle Enable/Disable ssh_usage_monitor.service at system startup"
