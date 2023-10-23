@@ -2,6 +2,14 @@
 
 # Function to display the menu
 show_menu() {
+    echo '
+  ___   ___   _  _     _   _   ___   ___   ___     __  __    ___    _  _   ___   _____    ___    ___   ___   _  _    ___ 
+ / __| / __| | || |   | | | | / __| | __| | _ \   |  \/  |  / _ \  | \| | |_ _| |_   _|  / _ \  | _ \ |_ _| | \| |  / __|
+ \__ \ \__ \ | __ |   | |_| | \__ \ | _|  |   /   | |\/| | | (_) | | .` |  | |    | |   | (_) | |   /  | |  | .` | | (_ |
+ |___/ |___/ |_||_|    \___/  |___/ |___| |_|_\   |_|  |_|  \___/  |_|\_| |___|   |_|    \___/  |_|_\ |___| |_|\_|  \___|
+
+                                    by ArashpMD'
+ 
     echo -e "\e[33mSSH Usage Monitor Menu\e[0m"  # Yellow color for the title
 
     if systemctl is-active --quiet ssh_usage_monitor.service; then
@@ -23,7 +31,7 @@ show_menu() {
 echo -e "\e[36mSSH Usage:\e[0m\n"  # Cyan color for the header
 
 # Print the header
-echo -e "\e[34mUSER           KB Sent       KB Received\e[0m"
+echo -e "\e[34mUSER           KB Received       KB Sent\e[0m"
 
 # Fetch and format the JSON data
 cat SSH_Usage.json | jq -r '.[] | "\(.name) \(.TX) \(.RX)"' | \
