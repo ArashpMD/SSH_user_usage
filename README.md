@@ -15,7 +15,7 @@ This script monitors the network usage for SSH sessions and aggregates the data 
 bash <(curl -Ls https://raw.githubusercontent.com/ArashpMD/SSH_user_usage/master/install.sh)
 ```
 ## See Usage Tracking and Menu
-You can observe the consumption and service options by typing `SSHusage` 
+You can observe the consumption and service options by command `SSHusage` 
 ```bash
 SSHusage
 ```
