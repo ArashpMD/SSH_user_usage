@@ -9,7 +9,7 @@
 
 function reset_all_traffic() {
     # Reset all numbers in front of TX and RX in the SSH_Usage.json file
-    jq '.[] |= {name: .name, RX: 0, TX: 0}' SSH_Usage.json > temp.json && mv temp.json /SSH_Usage.json
+    jq '.[] |= {name: .name, RX: 0, TX: 0}' /SSH_Usage.json > temp.json && mv temp.json /SSH_Usage.json
     echo "${GREEN}All user traffic has been reset.${RESET}"
 }
 
